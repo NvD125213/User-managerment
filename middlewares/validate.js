@@ -21,3 +21,35 @@ export const validateUser = [
     next();
   },
 ];
+
+export const validateBook = [
+  body("title")
+    .isString()
+    .withMessage("Title must be a string")
+    .notEmpty()
+    .withMessage("Title is required")
+    .isLength({ max: 255 })
+    .withMessage("Title must be less than 255 characters"),
+
+  body("author")
+    .isString()
+    .withMessage("Author must be a string")
+    .notEmpty()
+    .withMessage("Author is required")
+    .isLength({ max: 255 })
+    .withMessage("Author must be less than 255 characters"),
+
+  body("genre")
+    .isString()
+    .withMessage("Genre must be a string")
+    .notEmpty()
+    .withMessage("Genre is required")
+    .isLength({ max: 100 })
+    .withMessage("Genre must be less than 100 characters"),
+
+  body("publishedYear")
+    .isInt({ min: 1000, max: 9999 })
+    .withMessage("Published Year must be a valid year")
+    .notEmpty()
+    .withMessage("Published Year is required"),
+];

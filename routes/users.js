@@ -6,16 +6,28 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/users.js";
-import { authenticateToken } from "../middlewares/auth.js";
+import { requireAuth } from "../middlewares/auth.js";
 import { restrictTo } from "../middlewares/role.js";
 import { validateUser } from "../middlewares/validate.js";
 
 const router = express.Router();
 
-router.post("/users", authenticateToken, validateUser, createUser);
-router.get("/users", authenticateToken, getAllUsers);
-router.get("/users/:id", authenticateToken, getUserById);
-router.put("/users/:id", authenticateToken, validateUser, updateUser);
-router.delete("/users/:id", authenticateToken, restrictTo("admin"), deleteUser);
+router.post(
+  "/users",
+  requireAuth,
+  validateUser,
+  restrictTo("admin"),
+  createUser
+);
+router.get("/users", requireAuth, restrictTo("admin"), getAllUsers);
+router.get("/users/:id", requireAuth, restrictTo("admin"), getUserById);
+router.put(
+  "/users/:id",
+  requireAuth,
+  validateUser,
+  restrictTo("admin"),
+  updateUser
+);
+router.delete("/users/:id", requireAuth, restrictTo("admin"), deleteUser);
 
 export default router;
